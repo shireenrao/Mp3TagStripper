@@ -1,4 +1,4 @@
-from PyQt4 import QtCore, QtGui
+from PySide import QtCore, QtGui
 import sys
 from ui.Mp3TagStripper import MainDialog
 

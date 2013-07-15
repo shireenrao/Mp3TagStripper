@@ -4,8 +4,8 @@
 Module implementing MainDialog.
 """
 
-from PyQt4.QtGui import QDialog
-from PyQt4.QtCore import pyqtSignature
+from PySide.QtGui import QDialog
+#from PyQt4.QtCore import pyqtSignature
 
 from Ui_Mp3TagStripper import Ui_MainDialog
 
@@ -19,32 +19,32 @@ class MainDialog(QDialog, Ui_MainDialog):
         """
         QDialog.__init__(self, parent)
         self.setupUi(self)
-    
-    @pyqtSignature("")
+
+#    @pyqtSignature("")
     def on_btnLoadDirectory_clicked(self):
         """
         Slot documentation goes here.
         """
         # TODO: not implemented yet
         raise NotImplementedError
-    
-    @pyqtSignature("")
+
+#    @pyqtSignature("")
     def on_btnRefresh_clicked(self):
         """
         Slot documentation goes here.
         """
         # TODO: not implemented yet
         raise NotImplementedError
-    
-    @pyqtSignature("")
+
+#    @pyqtSignature("")
     def on_btnSave_clicked(self):
         """
         Slot documentation goes here.
         """
         # TODO: not implemented yet
         raise NotImplementedError
-    
-    @pyqtSignature("")
+
+#    @pyqtSignature("")
     def on_btnFilterString_clicked(self):
         """
         Slot documentation goes here.
