@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '/Users/shireenrao/mydev/python/Mp3TagStripper/mp3tagstripper/ui/Mp3TagStripper.ui'
+# Form implementation generated from reading ui file 'Mp3TagStripper.ui'
 #
-# Created: Mon Jul 15 23:13:27 2013
+# Created: Tue Jul 16 14:47:10 2013
 #      by: pyside-uic 0.2.14 running on PySide 1.1.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -72,14 +72,4 @@ class Ui_MainDialog(object):
         self.btnStripString.setText(QtGui.QApplication.translate("MainDialog", "Strip", None, QtGui.QApplication.UnicodeUTF8))
         self.radioButton.setText(QtGui.QApplication.translate("MainDialog", "ID3", None, QtGui.QApplication.UnicodeUTF8))
         self.radioButton_2.setText(QtGui.QApplication.translate("MainDialog", "File", None, QtGui.QApplication.UnicodeUTF8))
-
-
-if __name__ == "__main__":
-    import sys
-    app = QtGui.QApplication(sys.argv)
-    MainDialog = QtGui.QDialog()
-    ui = Ui_MainDialog()
-    ui.setupUi(MainDialog)
-    MainDialog.show()
-    sys.exit(app.exec_())
 
