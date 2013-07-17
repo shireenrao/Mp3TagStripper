@@ -14,6 +14,9 @@ class MainDialog(QDialog, Ui_Mp3TagStripper.Ui_MainDialog):
         self.setupUi(self)
         self.mp3dir = ''
 
+        header = QTreeWidgetItem(["Directory", "Field", "Value"])
+        self.treeWidget.setHeaderItem(header)
+        #self.treeWidget.setColumnWidth(25)
         self.btnLoadDirectory.setFocus()
         self.btnLoadDirectory.clicked.connect(self.loadDir)
 
@@ -28,8 +31,7 @@ class MainDialog(QDialog, Ui_Mp3TagStripper.Ui_MainDialog):
             self.lblDirName.setText(d)
             self.mp3dir = d
             fileList = self.getmp3list(d)
-            #pointListBox = QTreeWidget()
-            header = QTreeWidgetItem(["Directory","Filename", "Field", "Detail"])
+            header = QTreeWidgetItem(["Directory", "Field", "Value"])
             self.treeWidget.setHeaderItem(header)
             rootdir = []
             rootdir.append(os.path.basename(d))
@@ -40,7 +42,11 @@ class MainDialog(QDialog, Ui_Mp3TagStripper.Ui_MainDialog):
                 myfile = []
                 myfile.append(filename)
                 mp3file = QTreeWidgetItem(root, myfile)
-                mp3detail = QTreeWidgetItem(mp3file, ["Field", "some detail"])
+                mp3detail = QTreeWidgetItem(mp3file)
+                mp3detail.setText(0,"")
+                mp3detail.setText(1,"Name")
+                mp3detail.setText(2,"Value")
+            self.treeWidget.resizeColumnToContents(0)
             #pointListBox.show()
 
     def getmp3list(self, path):
