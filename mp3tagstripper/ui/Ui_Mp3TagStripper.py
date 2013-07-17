@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'Mp3TagStripper.ui'
 #
-# Created: Tue Jul 16 14:47:10 2013
+# Created: Tue Jul 16 15:46:39 2013
 #      by: pyside-uic 0.2.14 running on PySide 1.1.2
 #
 # WARNING! All changes made in this file will be lost!
