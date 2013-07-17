@@ -27,7 +27,21 @@ class MainDialog(QDialog, Ui_Mp3TagStripper.Ui_MainDialog):
         if d != '':
             self.lblDirName.setText(d)
             self.mp3dir = d
-            self.getmp3list(d)
+            fileList = self.getmp3list(d)
+            #pointListBox = QTreeWidget()
+            header = QTreeWidgetItem(["Directory","Filename", "Field", "Detail"])
+            self.treeWidget.setHeaderItem(header)
+            rootdir = []
+            rootdir.append(os.path.basename(d))
+            root = QTreeWidgetItem(self.treeWidget, rootdir)
+            for file in fileList:
+                filename = os.path.basename(file)
+                print filename
+                myfile = []
+                myfile.append(filename)
+                mp3file = QTreeWidgetItem(root, myfile)
+                mp3detail = QTreeWidgetItem(mp3file, ["Field", "some detail"])
+            #pointListBox.show()
 
     def getmp3list(self, path):
         fileList = []
@@ -37,7 +51,7 @@ class MainDialog(QDialog, Ui_Mp3TagStripper.Ui_MainDialog):
                     filename = os.path.join(root,name)
                     if filename.lower().endswith('.mp3'):
                         fileList.append(filename)
-        print fileList
+        return fileList
 
 
 app = QApplication(sys.argv)
