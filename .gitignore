@@ -23,6 +23,7 @@ local.properties
 .ropeproject
 *.pyc
 .idea
+.e4p
 
 # PDT-specific
 .buildpath
