@@ -9,6 +9,8 @@ from PyQt4.QtCore import pyqtSignature
 
 from Ui_Mp3TagStripper import Ui_MainDialog
 import os
+from mutagen.easyid3 import EasyID3
+from mutagen.mp3 import MP3
 
 __appname__ = "Mp3 Tag Stripper"
 
@@ -68,11 +70,11 @@ class MainDialog(QDialog, Ui_MainDialog):
             self.treeWidget.clear()
             self.lblDirName.setText(d)
             self.mp3dir = d
-            fileList = self.getmp3list(d)
+            fileList = self.getmp3list(self.mp3dir)
             header = QTreeWidgetItem(["Directory", "Field", "Value"])
             self.treeWidget.setHeaderItem(header)
             rootdir = []
-            rootdir.append(os.path.basename(d))
+            rootdir.append(os.path.basename(self.mp3dir))
             root = QTreeWidgetItem(self.treeWidget, rootdir)
             for file in fileList:
                 filename = os.path.basename(file)
@@ -91,9 +93,10 @@ class MainDialog(QDialog, Ui_MainDialog):
     def getmp3list(self, path):
         fileList = []
         if os.path.exists(path):
-            for root, dirs, files in os.walk(path):
+            for root, dirs, files in os.walk(unicode(path)):
                 for name in files:
                     filename = os.path.join(root,name)
                     if filename.lower().endswith('.mp3'):
                         fileList.append(filename)
         return fileList
+
