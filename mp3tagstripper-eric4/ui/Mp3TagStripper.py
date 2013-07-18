@@ -9,6 +9,8 @@ from PyQt4.QtCore import pyqtSignature
 
 from Ui_Mp3TagStripper import Ui_MainDialog
 
+__appname__ = "Mp3 Tag Stripper"
+
 class MainDialog(QDialog, Ui_MainDialog):
     """
     Class documentation goes here.
