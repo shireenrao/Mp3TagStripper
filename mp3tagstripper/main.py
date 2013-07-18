@@ -4,6 +4,8 @@ from PySide.QtGui import *
 import sys
 from ui import Ui_Mp3TagStripper
 import os
+from mutagen.easyid3 import EasyID3
+from mutagen.mp3 import MP3
 
 __appname__ = "Mp3 Tag Stripper"
 
@@ -28,6 +30,7 @@ class MainDialog(QDialog, Ui_Mp3TagStripper.Ui_MainDialog):
                                              " Open Directory", os.getcwd()
                                              , flags)
         if d != '':
+            self.treeWidget.clear()
             self.lblDirName.setText(d)
             self.mp3dir = d
             fileList = self.getmp3list(d)
@@ -38,14 +41,17 @@ class MainDialog(QDialog, Ui_Mp3TagStripper.Ui_MainDialog):
             root = QTreeWidgetItem(self.treeWidget, rootdir)
             for file in fileList:
                 filename = os.path.basename(file)
-                print filename
+                #print filename
+                audio = MP3(file, ID3=EasyID3)
                 myfile = []
                 myfile.append(filename)
                 mp3file = QTreeWidgetItem(root, myfile)
-                mp3detail = QTreeWidgetItem(mp3file)
-                mp3detail.setText(0,"")
-                mp3detail.setText(1,"Name")
-                mp3detail.setText(2,"Value")
+                for key in sorted(audio.keys()):
+                    #print key + ' ' + audio[key]
+                    mp3detail = QTreeWidgetItem(mp3file)
+                    mp3detail.setText(0,"")
+                    mp3detail.setText(1,key)
+                    mp3detail.setText(2,audio[key][0])
             self.treeWidget.resizeColumnToContents(0)
             #pointListBox.show()
 
