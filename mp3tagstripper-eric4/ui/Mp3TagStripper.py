@@ -8,6 +8,7 @@ from PyQt4.QtGui import QDialog, QTreeWidgetItem, QFileDialog
 from PyQt4.QtCore import pyqtSignature
 
 from Ui_Mp3TagStripper import Ui_MainDialog
+import os
 
 __appname__ = "Mp3 Tag Stripper"
 
