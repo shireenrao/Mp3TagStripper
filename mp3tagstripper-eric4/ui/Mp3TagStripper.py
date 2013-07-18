@@ -69,7 +69,7 @@ class MainDialog(QDialog, Ui_MainDialog):
         if d != '':
             self.treeWidget.clear()
             self.lblDirName.setText(d)
-            self.mp3dir = d
+            self.mp3dir = unicode(d)
             fileList = self.getmp3list(self.mp3dir)
             header = QTreeWidgetItem(["Directory", "Field", "Value"])
             self.treeWidget.setHeaderItem(header)
@@ -93,7 +93,7 @@ class MainDialog(QDialog, Ui_MainDialog):
     def getmp3list(self, path):
         fileList = []
         if os.path.exists(path):
-            for root, dirs, files in os.walk(unicode(path)):
+            for root, dirs, files in os.walk(path):
                 for name in files:
                     filename = os.path.join(root,name)
                     if filename.lower().endswith('.mp3'):
