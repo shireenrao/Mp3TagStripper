@@ -4,7 +4,7 @@
 Module implementing MainDialog.
 """
 
-from PyQt4.QtGui import QDialog, QTreeWidgetItem
+from PyQt4.QtGui import QDialog, QTreeWidgetItem, QFileDialog
 from PyQt4.QtCore import pyqtSignature
 
 from Ui_Mp3TagStripper import Ui_MainDialog
