@@ -18,7 +18,6 @@ class MainDialog(QDialog, Ui_Mp3TagStripper.Ui_MainDialog):
 
         header = QTreeWidgetItem(["Directory", "Field", "Value"])
         self.treeWidget.setHeaderItem(header)
-        #self.treeWidget.setColumnWidth(25)
         self.btnLoadDirectory.setFocus()
         self.btnLoadDirectory.clicked.connect(self.loadDir)
 
@@ -41,13 +40,11 @@ class MainDialog(QDialog, Ui_Mp3TagStripper.Ui_MainDialog):
             root = QTreeWidgetItem(self.treeWidget, rootdir)
             for file in fileList:
                 filename = os.path.basename(file)
-                #print filename
                 audio = MP3(file, ID3=EasyID3)
                 myfile = []
                 myfile.append(filename)
                 mp3file = QTreeWidgetItem(root, myfile)
                 for key in sorted(audio.keys()):
-                    #print key + ' ' + audio[key]
                     mp3detail = QTreeWidgetItem(mp3file)
                     mp3detail.setText(0,"")
                     mp3detail.setText(1,key)
