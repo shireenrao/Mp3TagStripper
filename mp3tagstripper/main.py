@@ -47,9 +47,9 @@ class MainDialog(QDialog, Ui_Mp3TagStripper.Ui_MainDialog):
                         mp3detail = QTreeWidgetItem(mp3node)
                         mp3detail.setText(0,"")
                         mp3detail.setText(1,key)
-                        try:
+                        if isinstance(unicode(mp3file.id3tags[key]), (list, tuple)):
                             mp3detail.setText(2,unicode(mp3file.id3tags[key][0]))
-                        except:
+                        else:
                             mp3detail.setText(2,unicode(mp3file.id3tags[key]))
             self.treeWidget.resizeColumnToContents(0)
             #pointListBox.show()
