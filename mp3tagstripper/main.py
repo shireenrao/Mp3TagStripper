@@ -9,6 +9,7 @@ from mp3lib import mp3utils
 
 __appname__ = "Mp3 Tag Stripper"
 
+
 class MainDialog(QDialog, Ui_Mp3TagStripper.Ui_MainDialog):
 
     def __init__(self, parent=None):
@@ -20,14 +21,19 @@ class MainDialog(QDialog, Ui_Mp3TagStripper.Ui_MainDialog):
         self.treeWidget.setHeaderItem(header)
         self.btnLoadDirectory.setFocus()
         self.btnLoadDirectory.clicked.connect(self.loadDir)
+        self.btnStripString.clicked.connect(self.stripString)
 
+    def stripString(self):
+        if self.lineEdit.text() == "":
+            QMessageBox.warning(self, __appname__, "Nothing to strip!")
+        if self.treeWidget.topLevelItemCount() == 0:
+            QMessageBox.warning(self, __appname__, "No Directory loaded to cleanup")
 
     def loadDir(self):
-        dir = "."
         flags = QFileDialog.DontResolveSymlinks | QFileDialog.ShowDirsOnly
-        d = QFileDialog.getExistingDirectory(self, __appname__ +
-                                             " Open Directory", os.getcwd()
-                                             , flags)
+        d = QFileDialog.getExistingDirectory(self,
+                                             __appname__ + " Open Directory",
+                                             os.getcwd(), flags)
         if d != '':
             self.treeWidget.clear()
             self.lblDirName.setText(d)
@@ -45,12 +51,14 @@ class MainDialog(QDialog, Ui_Mp3TagStripper.Ui_MainDialog):
                 for key in sorted(mp3file.id3tags.keys()):
                     if key != 'APIC:':
                         mp3detail = QTreeWidgetItem(mp3node)
-                        mp3detail.setText(0,"")
-                        mp3detail.setText(1,key)
-                        if isinstance(unicode(mp3file.id3tags[key]), (list, tuple)):
-                            mp3detail.setText(2,unicode(mp3file.id3tags[key][0]))
+                        mp3detail.setText(0, "")
+                        mp3detail.setText(1, key)
+                        if isinstance(unicode(mp3file.id3tags[key]),
+                                      (list, tuple)):
+                            mp3detail.setText(2,
+                                              unicode(mp3file.id3tags[key][0]))
                         else:
-                            mp3detail.setText(2,unicode(mp3file.id3tags[key]))
+                            mp3detail.setText(2, unicode(mp3file.id3tags[key]))
             self.treeWidget.resizeColumnToContents(0)
             #pointListBox.show()
 
@@ -59,7 +67,7 @@ class MainDialog(QDialog, Ui_Mp3TagStripper.Ui_MainDialog):
         if os.path.exists(path):
             for root, dirs, files in os.walk(path):
                 for name in files:
-                    filename = os.path.join(root,name)
+                    filename = os.path.join(root, name)
                     if filename.lower().endswith('.mp3'):
                         mp3obj = mp3utils.mp3FileInfo(filename)
                         mp3DetailsList.append(mp3obj)
