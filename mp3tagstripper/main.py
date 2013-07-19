@@ -4,7 +4,8 @@ from PySide.QtGui import *
 import sys
 from ui import Ui_Mp3TagStripper
 import os
-from mp3lib.mp3FileInfo import Mp3FileInfo
+#from mp3lib.mp3utils import Mp3FileInfo
+from mp3lib import mp3utils
 
 __appname__ = "Mp3 Tag Stripper"
 
@@ -42,10 +43,14 @@ class MainDialog(QDialog, Ui_Mp3TagStripper.Ui_MainDialog):
                 myfile.append(mp3file.filename)
                 mp3node = QTreeWidgetItem(root, myfile)
                 for key in sorted(mp3file.id3tags.keys()):
-                    mp3detail = QTreeWidgetItem(mp3node)
-                    mp3detail.setText(0,"")
-                    mp3detail.setText(1,key)
-                    mp3detail.setText(2,mp3file.id3tags[key][0])
+                    if key != 'APIC:':
+                        mp3detail = QTreeWidgetItem(mp3node)
+                        mp3detail.setText(0,"")
+                        mp3detail.setText(1,key)
+                        try:
+                            mp3detail.setText(2,unicode(mp3file.id3tags[key][0]))
+                        except:
+                            mp3detail.setText(2,unicode(mp3file.id3tags[key]))
             self.treeWidget.resizeColumnToContents(0)
             #pointListBox.show()
 
@@ -56,7 +61,7 @@ class MainDialog(QDialog, Ui_Mp3TagStripper.Ui_MainDialog):
                 for name in files:
                     filename = os.path.join(root,name)
                     if filename.lower().endswith('.mp3'):
-                        mp3obj = Mp3FileInfo(filename)
+                        mp3obj = mp3utils.mp3FileInfo(filename)
                         mp3DetailsList.append(mp3obj)
         return mp3DetailsList
 
