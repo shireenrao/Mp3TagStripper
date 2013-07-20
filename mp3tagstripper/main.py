@@ -29,6 +29,13 @@ class MainDialog(QDialog, Ui_Mp3TagStripper.Ui_MainDialog):
         if self.treeWidget.topLevelItemCount() == 0:
             QMessageBox.warning(self, __appname__, "No Directory loaded to cleanup")
 
+        it = QTreeWidgetItemIterator(self.treeWidget)
+        while it.value():
+            if it.value().text(0) != '':
+                print it.value().text(0)
+            it += 1
+
+
     def loadDir(self):
         flags = QFileDialog.DontResolveSymlinks | QFileDialog.ShowDirsOnly
         d = QFileDialog.getExistingDirectory(self,
