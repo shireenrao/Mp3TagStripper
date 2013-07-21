@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'Mp3TagStripper.ui'
 #
-# Created: Tue Jul 16 15:46:39 2013
+# Created: Sun Jul 21 15:26:03 2013
 #      by: pyside-uic 0.2.14 running on PySide 1.1.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -41,14 +41,14 @@ class Ui_MainDialog(object):
         self.btnStripString = QtGui.QPushButton(self.frame)
         self.btnStripString.setObjectName("btnStripString")
         self.horizontalLayout_2.addWidget(self.btnStripString)
-        self.radioButton = QtGui.QRadioButton(self.frame)
-        self.radioButton.setEnabled(True)
-        self.radioButton.setObjectName("radioButton")
-        self.horizontalLayout_2.addWidget(self.radioButton)
-        self.radioButton_2 = QtGui.QRadioButton(self.frame)
-        self.radioButton_2.setChecked(True)
-        self.radioButton_2.setObjectName("radioButton_2")
-        self.horizontalLayout_2.addWidget(self.radioButton_2)
+        self.optID3 = QtGui.QRadioButton(self.frame)
+        self.optID3.setEnabled(True)
+        self.optID3.setObjectName("optID3")
+        self.horizontalLayout_2.addWidget(self.optID3)
+        self.optFile = QtGui.QRadioButton(self.frame)
+        self.optFile.setChecked(True)
+        self.optFile.setObjectName("optFile")
+        self.horizontalLayout_2.addWidget(self.optFile)
         self.lineEdit = QtGui.QLineEdit(self.frame)
         self.lineEdit.setObjectName("lineEdit")
         self.horizontalLayout_2.addWidget(self.lineEdit)
@@ -70,6 +70,6 @@ class Ui_MainDialog(object):
         self.btnRefresh.setText(QtGui.QApplication.translate("MainDialog", "Refresh", None, QtGui.QApplication.UnicodeUTF8))
         self.btnSave.setText(QtGui.QApplication.translate("MainDialog", "Save", None, QtGui.QApplication.UnicodeUTF8))
         self.btnStripString.setText(QtGui.QApplication.translate("MainDialog", "Strip", None, QtGui.QApplication.UnicodeUTF8))
-        self.radioButton.setText(QtGui.QApplication.translate("MainDialog", "ID3", None, QtGui.QApplication.UnicodeUTF8))
-        self.radioButton_2.setText(QtGui.QApplication.translate("MainDialog", "File", None, QtGui.QApplication.UnicodeUTF8))
+        self.optID3.setText(QtGui.QApplication.translate("MainDialog", "ID3", None, QtGui.QApplication.UnicodeUTF8))
+        self.optFile.setText(QtGui.QApplication.translate("MainDialog", "File", None, QtGui.QApplication.UnicodeUTF8))
 

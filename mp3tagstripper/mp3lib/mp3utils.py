@@ -18,7 +18,13 @@ class mp3FileInfo:
         self.filename = os.path.basename(filename)
         self.foldername = os.path.split(os.path.split(filename)[0])[1]
         self.id3tags = MP3(filename)
+        self.cleanfile = self.filename
         #self.cleanTags(filter)
+
+    def cleanFilename(self, filter):
+        temp = self.filename.replace(filter, '')
+        temp = temp.strip()
+        self.cleanfile = temp
 
     def cleanTags(self, filter):
         self.cleanid3Tags = {}

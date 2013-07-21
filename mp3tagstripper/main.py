@@ -16,14 +16,21 @@ class MainDialog(QDialog, Ui_Mp3TagStripper.Ui_MainDialog):
         super(MainDialog, self).__init__(parent)
         self.setupUi(self)
         self.mp3dir = ''
+        self.id3flag = False
+        self.fileflag = False
 
         header = QTreeWidgetItem(["Directory", "Field", "Value"])
         self.treeWidget.setHeaderItem(header)
         self.btnLoadDirectory.setFocus()
         self.btnLoadDirectory.clicked.connect(self.loadDir)
         self.btnStripString.clicked.connect(self.stripString)
+        self.btnRefresh.clicked.connect(self.refresh)
 
     def stripString(self):
+        if self.optID3.isChecked():
+            self.id3flag = True
+        if self.optFile.isChecked():
+            self.fileflag = True
         _expression = self.lineEdit.text()
         if _expression == "":
             QMessageBox.warning(self, __appname__, "Nothing to strip!")
@@ -35,6 +42,9 @@ class MainDialog(QDialog, Ui_Mp3TagStripper.Ui_MainDialog):
         #    if it.value().text(0) != '':
         #        print it.value().text(0)
         #    it += 1
+        for mp3file in self.mp3zList:
+            mp3file.cleanFilename(_expression)
+        """
         params = {}
         params['mp3files'] = self.getAllMp3sList(self.lblDirName.text())
         params['expr'] = _expression
@@ -42,8 +52,8 @@ class MainDialog(QDialog, Ui_Mp3TagStripper.Ui_MainDialog):
         params['print'] = ''
 
         mp3utils.rename(params)
-        self.reloadDir(self.lblDirName.text())
-
+        """
+        self.reloadDir()
 
     def loadDir(self):
         flags = QFileDialog.DontResolveSymlinks | QFileDialog.ShowDirsOnly
@@ -53,34 +63,42 @@ class MainDialog(QDialog, Ui_Mp3TagStripper.Ui_MainDialog):
         if d != '':
             self.lblDirName.setText(d)
             self.mp3dir = d
-            self.reloadDir(d)
+            self.mp3zList = self.getAllMp3DetailsList(d)
+            self.reloadDir()
 
+    def refresh(self):
+        d = self.lblDirName.text()
+        self.mp3zList = self.getAllMp3DetailsList(d)
+        self.reloadDir()
 
-    def reloadDir(self, path):
-            self.treeWidget.clear()
-            self.mp3zList = self.getAllMp3DetailsList(path)
-            #header = QTreeWidgetItem(["Directory", "Field", "Value"])
-            #self.treeWidget.setHeaderItem(header)
-            rootdir = []
-            rootdir.append(os.path.basename(path))
-            root = QTreeWidgetItem(self.treeWidget, rootdir)
-            for mp3file in self.mp3zList:
-                myfile = []
+    def reloadDir(self):
+        path = self.lblDirName.text()
+        self.treeWidget.clear()
+        #header = QTreeWidgetItem(["Directory", "Field", "Value"])
+        #self.treeWidget.setHeaderItem(header)
+        rootdir = []
+        rootdir.append(os.path.basename(path))
+        root = QTreeWidgetItem(self.treeWidget, rootdir)
+        for mp3file in self.mp3zList:
+            myfile = []
+            if self.fileflag:
+                myfile.append(mp3file.cleanfile)
+            else:
                 myfile.append(mp3file.filename)
-                mp3node = QTreeWidgetItem(root, myfile)
-                for key in sorted(mp3file.id3tags.keys()):
-                    if key != 'APIC:':
-                        mp3detail = QTreeWidgetItem(mp3node)
-                        mp3detail.setText(0, "")
-                        mp3detail.setText(1, key)
-                        if isinstance(unicode(mp3file.id3tags[key]),
-                                      (list, tuple)):
-                            mp3detail.setText(2,
-                                              unicode(mp3file.id3tags[key][0]))
-                        else:
-                            mp3detail.setText(2, unicode(mp3file.id3tags[key]))
-            self.treeWidget.resizeColumnToContents(0)
-            #pointListBox.show()
+            mp3node = QTreeWidgetItem(root, myfile)
+            for key in sorted(mp3file.id3tags.keys()):
+                if key != 'APIC:':
+                    mp3detail = QTreeWidgetItem(mp3node)
+                    mp3detail.setText(0, "")
+                    mp3detail.setText(1, key)
+                    if isinstance(unicode(mp3file.id3tags[key]),
+                                    (list, tuple)):
+                        mp3detail.setText(2,
+                                            unicode(mp3file.id3tags[key][0]))
+                    else:
+                        mp3detail.setText(2, unicode(mp3file.id3tags[key]))
+        self.treeWidget.resizeColumnToContents(0)
+        #pointListBox.show()
 
     def getAllMp3DetailsList(self, path):
         mp3DetailsList = []
