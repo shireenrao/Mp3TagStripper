@@ -24,16 +24,25 @@ class MainDialog(QDialog, Ui_Mp3TagStripper.Ui_MainDialog):
         self.btnStripString.clicked.connect(self.stripString)
 
     def stripString(self):
-        if self.lineEdit.text() == "":
+        _expression = self.lineEdit.text()
+        if _expression == "":
             QMessageBox.warning(self, __appname__, "Nothing to strip!")
         if self.treeWidget.topLevelItemCount() == 0:
             QMessageBox.warning(self, __appname__, "No Directory loaded to cleanup")
 
-        it = QTreeWidgetItemIterator(self.treeWidget)
-        while it.value():
-            if it.value().text(0) != '':
-                print it.value().text(0)
-            it += 1
+        #it = QTreeWidgetItemIterator(self.treeWidget)
+        #while it.value():
+        #    if it.value().text(0) != '':
+        #        print it.value().text(0)
+        #    it += 1
+        params = {}
+        params['mp3files'] = self.getAllMp3sList(self.lblDirName.text())
+        params['expr'] = _expression
+        params['compare'] = ''
+        params['print'] = ''
+
+        mp3utils.rename(params)
+        self.reloadDir(self.lblDirName.text())
 
 
     def loadDir(self):
@@ -42,16 +51,20 @@ class MainDialog(QDialog, Ui_Mp3TagStripper.Ui_MainDialog):
                                              __appname__ + " Open Directory",
                                              os.getcwd(), flags)
         if d != '':
-            self.treeWidget.clear()
             self.lblDirName.setText(d)
             self.mp3dir = d
-            mp3zList = self.getAllMp3DetailsList(d)
+            self.reloadDir(d)
+
+
+    def reloadDir(self, path):
+            self.treeWidget.clear()
+            self.mp3zList = self.getAllMp3DetailsList(path)
             #header = QTreeWidgetItem(["Directory", "Field", "Value"])
             #self.treeWidget.setHeaderItem(header)
             rootdir = []
-            rootdir.append(os.path.basename(d))
+            rootdir.append(os.path.basename(path))
             root = QTreeWidgetItem(self.treeWidget, rootdir)
-            for mp3file in mp3zList:
+            for mp3file in self.mp3zList:
                 myfile = []
                 myfile.append(mp3file.filename)
                 mp3node = QTreeWidgetItem(root, myfile)
@@ -80,6 +93,15 @@ class MainDialog(QDialog, Ui_Mp3TagStripper.Ui_MainDialog):
                         mp3DetailsList.append(mp3obj)
         return mp3DetailsList
 
+    def getAllMp3sList(self, path):
+        mp3sList = []
+        if os.path.exists(path):
+            for root, dirs, files in os.walk(path):
+                for name in files:
+                    filename = os.path.join(root, name)
+                    if filename.lower().endswith('.mp3'):
+                        mp3sList.append(filename)
+        return mp3sList
 
 app = QApplication(sys.argv)
 form = MainDialog()
