@@ -19,12 +19,15 @@ class mp3FileInfo:
         self.foldername = os.path.split(os.path.split(filename)[0])[1]
         self.id3tags = MP3(filename)
         self.cleanfile = self.filename
+        self.fileisclean = False
+        self.id3isclean = False
         #self.cleanTags(filter)
 
     def cleanFilename(self, filter):
         temp = self.filename.replace(filter, '')
         temp = temp.strip()
         self.cleanfile = temp
+        self.fileisclean = True
 
     def cleanTags(self, filter):
         self.cleanid3Tags = {}
@@ -48,6 +51,7 @@ class mp3FileInfo:
                 self.cleanid3Tags[newkey] = temp
             else:
                 self.cleanid3Tags[newkey] = self.id3tags[key]
+        self.id3isclean = True
 
     def getAllID3Tgs(self):
         return self.id3tags
@@ -85,6 +89,7 @@ def savecleantags(params):
     myList = []
     for file in fileList:
         myfile = mp3FileInfo(file, _expression)
+        myfile.cleanTags(_expression)
         myList.append(myfile)
 
 
@@ -129,27 +134,60 @@ def savecleantags(params):
 
         for tagkey in tagkeys:
             if tagkey == 'TOPE':
-                newtags['TOPE'] = TOPE(encoding=3, text=unicode(tagkeys[tagkey], errors='ignore'))
+                if isinstance(tagkeys[tagkey], unicode):
+                    newtags['TOPE'] = TOPE(encoding=3, text=tagkeys[tagkey])
+                else:
+                    newtags['TOPE'] = TOPE(encoding=3, text=unicode(tagkeys[tagkey], errors='ignore'))
             elif tagkey == 'TDRC':
-                newtags['TDRC'] = TDRC(encoding=3, text=unicode(tagkeys[tagkey], errors='ignore'))
+                if isinstance(tagkeys[tagkey], unicode):
+                    newtags['TDRC'] = TOPE(encoding=3, text=tagkeys[tagkey])
+                else:
+                    newtags['TDRC'] = TOPE(encoding=3, text=unicode(tagkeys[tagkey], errors='ignore'))
             elif tagkey == 'TPE2':
-                newtags['TPE2'] = TPE2(encoding=3, text=unicode(tagkeys[tagkey], errors='ignore'))
+                if isinstance(tagkeys[tagkey], unicode):
+                    newtags['TPE2'] = TOPE(encoding=3, text=tagkeys[tagkey])
+                else:
+                    newtags['TPE2'] = TOPE(encoding=3, text=unicode(tagkeys[tagkey], errors='ignore'))
             elif tagkey == 'TPE1':
-                newtags['TPE1'] = TPE1(encoding=3, text=unicode(tagkeys[tagkey], errors='ignore'))
+                if isinstance(tagkeys[tagkey], unicode):
+                    newtags['TPE1'] = TOPE(encoding=3, text=tagkeys[tagkey])
+                else:
+                    newtags['TPE1'] = TOPE(encoding=3, text=unicode(tagkeys[tagkey], errors='ignore'))
             elif tagkey == 'TALB':
-                newtags['TALB'] = TALB(encoding=3, text=unicode(tagkeys[tagkey], errors='ignore'))
+                if isinstance(tagkeys[tagkey], unicode):
+                    newtags['TALB'] = TOPE(encoding=3, text=tagkeys[tagkey])
+                else:
+                    newtags['TALB'] = TOPE(encoding=3, text=unicode(tagkeys[tagkey], errors='ignore'))
             elif tagkey == 'TRCK':
-                newtags['TRCK'] = TRCK(encoding=3, text=unicode(tagkeys[tagkey], errors='ignore'))
+                if isinstance(tagkeys[tagkey], unicode):
+                    newtags['TRCK'] = TOPE(encoding=3, text=tagkeys[tagkey])
+                else:
+                    newtags['TRCK'] = TOPE(encoding=3, text=unicode(tagkeys[tagkey], errors='ignore'))
             elif tagkey == 'TIT2':
-                newtags['TIT2'] = TIT2(encoding=3, text=unicode(tagkeys[tagkey], errors='ignore'))
+                if isinstance(tagkeys[tagkey], unicode):
+                    newtags['TIT2'] = TOPE(encoding=3, text=tagkeys[tagkey])
+                else:
+                    newtags['TIT2'] = TOPE(encoding=3, text=unicode(tagkeys[tagkey], errors='ignore'))
             elif tagkey == 'TCON':
-                newtags['TCON'] = TCON(encoding=3, text=unicode(tagkeys[tagkey], errors='ignore'))
+                if isinstance(tagkeys[tagkey], unicode):
+                    newtags['TCON'] = TOPE(encoding=3, text=tagkeys[tagkey])
+                else:
+                    newtags['TCON'] = TOPE(encoding=3, text=unicode(tagkeys[tagkey], errors='ignore'))
             elif tagkey == 'TENC':
-                newtags['TENC'] = TENC(encoding=3, text=unicode(tagkeys[tagkey], errors='ignore'))
+                if isinstance(tagkeys[tagkey], unicode):
+                    newtags['TENC'] = TOPE(encoding=3, text=tagkeys[tagkey])
+                else:
+                    newtags['TENC'] = TOPE(encoding=3, text=unicode(tagkeys[tagkey], errors='ignore'))
             elif tagkey == 'COMM':
-                newtags['COMM'] = COMM(encoding=3, text=unicode(tagkeys[tagkey], errors='ignore'))
+                if isinstance(tagkeys[tagkey], unicode):
+                    newtags['COMM'] = TOPE(encoding=3, text=tagkeys[tagkey])
+                else:
+                    newtags['COMM'] = TOPE(encoding=3, text=unicode(tagkeys[tagkey], errors='ignore'))
             elif tagkey == 'TCOM':
-                newtags['TCOM'] = TCOM(encoding=3, text=unicode(tagkeys[tagkey], errors='ignore'))
+                if isinstance(tagkeys[tagkey], unicode):
+                    newtags['TCOM'] = TOPE(encoding=3, text=tagkeys[tagkey])
+                else:
+                    newtags['TCOM'] = TOPE(encoding=3, text=unicode(tagkeys[tagkey], errors='ignore'))
             elif tagkey == 'APIC:':
                 newtags['APIC'] = tagkeys[tagkey]
 

@@ -25,17 +25,59 @@ class MainDialog(QDialog, Ui_Mp3TagStripper.Ui_MainDialog):
         self.btnLoadDirectory.clicked.connect(self.loadDir)
         self.btnStripString.clicked.connect(self.stripString)
         self.btnRefresh.clicked.connect(self.refresh)
+        self.btnSave.clicked.connect(self.save)
+
+    def save(self):
+        if (not self.fileflag) and (not self.id3flag):
+            QMessageBox.warning(self, __appname__, "Nothing to Save!")
+            return
+
+        msg = ''
+        if self.fileflag:
+            self.saveFiles()
+            msg = "Saving filenames complete!"
+
+        if self.id3flag:
+            self.saveID3Tags()
+            msg += "\nSaving id3 tags complete!"
+
+        QMessageBox.information(self, __appname__, msg)
+
+    def saveID3Tags(self):
+
+        params = {}
+        params['mp3files'] = self.getAllMp3sList(self.lblDirName.text())
+        params['expr'] = self.id3Str2Strip
+        params['compare'] = ''
+        params['print'] = ''
+
+        mp3utils.savecleantags(params)
+
+    def saveFiles(self):
+
+        params = {}
+        params['mp3files'] = self.getAllMp3sList(self.lblDirName.text())
+        params['expr'] = self.fileStr2Strip
+        params['compare'] = ''
+        params['print'] = ''
+
+        mp3utils.rename(params)
 
     def stripString(self):
-        if self.optID3.isChecked():
-            self.id3flag = True
-        if self.optFile.isChecked():
-            self.fileflag = True
         _expression = self.lineEdit.text()
         if _expression == "":
             QMessageBox.warning(self, __appname__, "Nothing to strip!")
+            return
         if self.treeWidget.topLevelItemCount() == 0:
             QMessageBox.warning(self, __appname__, "No Directory loaded to cleanup")
+            return
+        #setup flags to see what is being stripped
+        if self.optID3.isChecked():
+            self.id3flag = True
+            self.id3Str2Strip = _expression
+        if self.optFile.isChecked():
+            self.fileflag = True
+            self.fileStr2Strip = _expression
 
         #it = QTreeWidgetItemIterator(self.treeWidget)
         #while it.value():
@@ -44,20 +86,13 @@ class MainDialog(QDialog, Ui_Mp3TagStripper.Ui_MainDialog):
         #    it += 1
         if self.fileflag:
             for mp3file in self.mp3zList:
-                mp3file.cleanFilename(_expression)
+                if not mp3file.fileisclean:
+                    mp3file.cleanFilename(self.fileStr2Strip)
 
         if self.id3flag:
             for mp3file in self.mp3zList:
-                mp3file.cleanTags(_expression)
-        """
-        params = {}
-        params['mp3files'] = self.getAllMp3sList(self.lblDirName.text())
-        params['expr'] = _expression
-        params['compare'] = ''
-        params['print'] = ''
-
-        mp3utils.rename(params)
-        """
+                if not mp3file.id3isclean:
+                    mp3file.cleanTags(self.id3Str2Strip)
         self.reloadDir()
 
     def loadDir(self):
@@ -89,7 +124,6 @@ class MainDialog(QDialog, Ui_Mp3TagStripper.Ui_MainDialog):
         for mp3file in self.mp3zList:
             myfile = []
             if self.fileflag:
-                import ipdb; ipdb.set_trace() # BREAKPOINT
                 myfile.append(mp3file.cleanfile)
             else:
                 myfile.append(mp3file.filename)
