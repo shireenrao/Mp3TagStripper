@@ -36,11 +36,17 @@ class MainDialog(QDialog, Ui_Mp3TagStripper.Ui_MainDialog):
         if self.fileflag:
             self.saveFiles()
             msg = "Saving filenames complete!"
+            self.fileflag = False
 
         if self.id3flag:
             self.saveID3Tags()
-            msg += "\nSaving id3 tags complete!"
+            if msg:
+                msg += "\nSaving id3 tags complete!"
+            else:
+                msg = "Saving id3 tags complete!"
+            self.id3flag = False
 
+        self.reloadDir()
         QMessageBox.information(self, __appname__, msg)
 
     def saveID3Tags(self):
@@ -72,12 +78,15 @@ class MainDialog(QDialog, Ui_Mp3TagStripper.Ui_MainDialog):
             QMessageBox.warning(self, __appname__, "No Directory loaded to cleanup")
             return
         #setup flags to see what is being stripped
+        msg = ''
         if self.optID3.isChecked():
             self.id3flag = True
             self.id3Str2Strip = _expression
+            msg = "ID3 Stripping complete!"
         if self.optFile.isChecked():
             self.fileflag = True
             self.fileStr2Strip = _expression
+            msg = "Filename Stripping complete!"
 
         #it = QTreeWidgetItemIterator(self.treeWidget)
         #while it.value():
@@ -94,6 +103,7 @@ class MainDialog(QDialog, Ui_Mp3TagStripper.Ui_MainDialog):
                 if not mp3file.id3isclean:
                     mp3file.cleanTags(self.id3Str2Strip)
         self.reloadDir()
+        QMessageBox.information(self, __appname__, msg)
 
     def loadDir(self):
         flags = QFileDialog.DontResolveSymlinks | QFileDialog.ShowDirsOnly
