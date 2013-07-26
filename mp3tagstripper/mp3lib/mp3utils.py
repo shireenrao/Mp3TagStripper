@@ -186,6 +186,9 @@ def savecleantags(params):
             elif tagkey == 'APIC:':
                 newtags['APIC'] = tagkeys[tagkey]
 
+        #hard code album artist
+        newtags['TPE2'] = TPE2(encoding=3, text=unicode(tagkeys['TALB'], errors='ignore'))
+
 
         #delete old tags
         tagfiledel = MP3(filename)
