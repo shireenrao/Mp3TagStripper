@@ -11,6 +11,7 @@
 bin/**
 tmp/**
 tmp/**/*
+mp3tagstripper/build/*
 *.tmp
 *.bak
 *.swp
