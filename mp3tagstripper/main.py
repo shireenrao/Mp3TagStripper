@@ -46,7 +46,7 @@ class MainDialog(QDialog, Ui_Mp3TagStripper.Ui_MainDialog):
                 msg = "Saving id3 tags complete!"
             self.id3flag = False
 
-        self.reloadDir()
+        self.refresh()
         QMessageBox.information(self, __appname__, msg)
 
     def saveID3Tags(self):
